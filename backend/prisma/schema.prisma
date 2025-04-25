@@ -9,10 +9,25 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  stationName String   @unique
-  password    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int           @id             @default(autoincrement())
+  email         String        @unique
+  stationName   String        @unique
+  password      String
+  trainRecords  TrainRecord[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model TrainRecord {
+  id               Int     @id @default(autoincrement())
+  userId           Int
+  trainNumber      Int
+  railwayNumber    Int
+  departureStation String
+  arrivalStation   String
+  arrivalTime      DateTime
+  departureTime    DateTime
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

@@ -31,6 +31,11 @@ export class RecordController {
     return this.recordService.findAll(+req.user.id);
   }
 
+  @Get('search/:station')
+  search(@Param('station') arrivalStation: string, @Req() req) {
+    return this.recordService.search(arrivalStation, +req.user.id);
+  }
+
   @Put(':id')
   @UsePipes(new ValidationPipe())
   update(

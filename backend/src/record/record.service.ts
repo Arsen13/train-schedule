@@ -37,7 +37,27 @@ export class RecordService {
   }
 
   async findAll(userId: number) {
-    return await this.prisma.trainRecord.findMany({ where: { userId } });
+    return await this.prisma.trainRecord.findMany({
+      where: { userId },
+      orderBy: {
+        arrivalTime: 'asc',
+      },
+    });
+  }
+
+  async search(arrivalStation: string, userId) {
+    const records = await this.prisma.trainRecord.findMany({
+      where: { userId },
+      orderBy: {
+        arrivalTime: 'asc',
+      },
+    });
+
+    const filteredRecords = records.filter((record) =>
+      record.arrivalStation.includes(arrivalStation),
+    );
+
+    return filteredRecords;
   }
 
   async update(

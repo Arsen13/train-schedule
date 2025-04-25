@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -26,5 +28,10 @@ export class RecordController {
   @Get()
   findAll(@Req() req) {
     return this.recordService.findAll(+req.user.id);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') recordId: string, @Req() req) {
+    return this.recordService.delete(+recordId, +req.user.id);
   }
 }

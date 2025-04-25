@@ -5,14 +5,15 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { RecordService } from './record.service';
-import { CreateRecordDto } from './dto/create-record.dto';
 import { JwtAuthGuard } from 'src/auth/guards/auth/jwt-auth.guard';
+import { CreateUpdateRecordDto } from './dto/create-update-record.dto';
 
 @Controller('record')
 @UseGuards(JwtAuthGuard)
@@ -21,13 +22,23 @@ export class RecordController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() createRecordDto: CreateRecordDto, @Req() req) {
+  create(@Body() createRecordDto: CreateUpdateRecordDto, @Req() req) {
     return this.recordService.create(createRecordDto, +req.user.id);
   }
 
   @Get()
   findAll(@Req() req) {
     return this.recordService.findAll(+req.user.id);
+  }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe())
+  update(
+    @Body() updateRecordDto: CreateUpdateRecordDto,
+    @Param('id') recordId: string,
+    @Req() req,
+  ) {
+    return this.recordService.update(updateRecordDto, +recordId, +req.user.id);
   }
 
   @Delete(':id')

@@ -4,13 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateRecordDto } from './dto/create-record.dto';
+import { CreateUpdateRecordDto } from './dto/create-update-record.dto';
 
 @Injectable()
 export class RecordService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createRecordDto: CreateRecordDto, userId: number) {
+  async create(createRecordDto: CreateUpdateRecordDto, userId: number) {
     const isRecordExist = await this.prisma.trainRecord.findFirst({
       where: {
         trainNumber: createRecordDto.trainNumber,
@@ -38,6 +38,29 @@ export class RecordService {
 
   async findAll(userId: number) {
     return await this.prisma.trainRecord.findMany({ where: { userId } });
+  }
+
+  async update(
+    updateRecordDto: CreateUpdateRecordDto,
+    recordId: number,
+    userId: number,
+  ) {
+    const record = await this.prisma.trainRecord.findFirst({
+      where: {
+        id: recordId,
+        userId,
+      },
+    });
+
+    if (!record) throw new NotFoundException('Record not found');
+
+    return await this.prisma.trainRecord.update({
+      where: {
+        id: recordId,
+        userId,
+      },
+      data: updateRecordDto,
+    });
   }
 
   async delete(recordId: number, userId: number) {

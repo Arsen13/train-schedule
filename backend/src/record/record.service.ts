@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUpdateRecordDto } from './dto/create-update-record.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class RecordService {
@@ -42,6 +43,17 @@ export class RecordService {
       orderBy: {
         arrivalTime: 'asc',
       },
+    });
+  }
+
+  async findAllPaginated(query: PaginationDto, userId: number) {
+    const { page, limit, sortOrder } = query;
+
+    return await this.prisma.trainRecord.findMany({
+      where: { userId },
+      orderBy: { arrivalTime: sortOrder },
+      skip: (+page - 1) * +limit,
+      take: +limit,
     });
   }
 

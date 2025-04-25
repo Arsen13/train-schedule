@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -14,6 +16,7 @@ import {
 import { RecordService } from './record.service';
 import { JwtAuthGuard } from 'src/auth/guards/auth/jwt-auth.guard';
 import { CreateUpdateRecordDto } from './dto/create-update-record.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('record')
 @UseGuards(JwtAuthGuard)
@@ -29,6 +32,12 @@ export class RecordController {
   @Get()
   findAll(@Req() req) {
     return this.recordService.findAll(+req.user.id);
+  }
+
+  @Get('pagination')
+  @UsePipes(new ValidationPipe())
+  findAllPaginated(@Req() req, @Query() query: PaginationDto) {
+    return this.recordService.findAllPaginated(query, +req.user.id);
   }
 
   @Get('search/:station')

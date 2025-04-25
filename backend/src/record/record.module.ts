@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RecordService } from './record.service';
 import { RecordController } from './record.controller';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 @Module({
   controllers: [RecordController],

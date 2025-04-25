@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   UseGuards,
@@ -20,5 +21,10 @@ export class RecordController {
   @UsePipes(new ValidationPipe())
   create(@Body() createRecordDto: CreateRecordDto, @Req() req) {
     return this.recordService.create(createRecordDto, +req.user.id);
+  }
+
+  @Get()
+  findAll(@Req() req) {
+    return this.recordService.findAll(+req.user.id);
   }
 }

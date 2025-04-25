@@ -31,4 +31,8 @@ export class RecordService {
       },
     });
   }
+
+  async findAll(userId: number) {
+    return await this.prisma.trainRecord.findMany({ where: { userId } });
+  }
 }

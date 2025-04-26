@@ -1,5 +1,5 @@
 import { API_URL } from "@/constants/api";
-import { Record } from "@/lib/types";
+import { CreateRecordT, Record } from "@/lib/types";
 import { create } from "zustand";
 
 export type State = {
@@ -13,12 +13,13 @@ export type Actions = {
   getRecords: (page?: number, sortOrder?: "asc" | "desc") => void;
   incrementPage: () => void;
   decrementPage: () => void;
+  createRecord: (data: CreateRecordT) => void;
 };
 
 export const useRecordStore = create<State & Actions>()((set, get) => ({
   records: [],
   page: 1,
-  limit: 3,
+  limit: 8,
   maxPageNumber: 0,
 
   getRecords: async (page = get().page, sortOrder = "asc") => {
@@ -65,6 +66,28 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
       const decrement = currentPage - 1;
       set({ page: decrement });
       get().getRecords();
+    }
+  },
+
+  createRecord: async (data: CreateRecordT) => {
+    try {
+      const response = await fetch(`${API_URL}/record`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+      if (responseData.id) {
+        if (get().records.length < get().limit) {
+          set(() => ({ records: [...get().records, responseData] }));
+        }
+      }
+    } catch (error) {
+      console.error("Error with creating record:", error);
     }
   },
 }));

@@ -78,3 +78,12 @@ export type RecordProps = {
   departureTime: string;
   arrivalTime: string;
 };
+
+export type CreateRecordT = {
+  arrivalStation: string;
+  arrivalTime: Date;
+  departureStation: string;
+  departureTime: Date;
+  railwayNumber: number;
+  trainNumber: number;
+};

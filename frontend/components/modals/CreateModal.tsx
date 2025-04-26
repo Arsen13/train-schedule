@@ -1,6 +1,7 @@
 "use client";
 
 import { CreateRecordSchema } from "@/lib/types";
+import { useRecordStore } from "@/store/recordStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
@@ -8,9 +9,11 @@ import { IoClose } from "react-icons/io5";
 export default function CreateModal() {
   const router = useRouter();
 
-  const handleCreateRecord = (formData: FormData) => {
+  const createRecord = useRecordStore((state) => state.createRecord);
+
+  const handleCreateRecord = async (formData: FormData) => {
     const result = CreateRecordSchema.safeParse(Object.fromEntries(formData));
-    console.log("res", result);
+
     if (!result.success) {
       let errorMessage = "";
       result.error.issues.forEach(
@@ -20,7 +23,7 @@ export default function CreateModal() {
       return;
     }
 
-    console.log(result.data);
+    await createRecord(result.data);
     toast.success("Successfully create a record");
     router.back();
   };

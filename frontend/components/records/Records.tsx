@@ -7,6 +7,7 @@ import { useEffect } from "react";
 export default function Records() {
   const records = useRecordStore((state) => state.records);
   const getRecords = useRecordStore((state) => state.getRecords);
+  const deleteRecord = useRecordStore((state) => state.deleteRecord);
 
   useEffect(() => {
     getRecords();
@@ -21,12 +22,14 @@ export default function Records() {
         records.map((record) => (
           <Record
             key={record.id}
+            id={record.id}
             trainNumber={record.trainNumber}
             railwayNumber={record.railwayNumber}
             departureStation={record.departureStation}
             arrivalStation={record.arrivalStation}
             departureTime={record.departureTime}
             arrivalTime={record.arrivalTime}
+            deleteRecord={deleteRecord}
           />
         ))
       )}

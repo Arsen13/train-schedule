@@ -71,12 +71,14 @@ export type Record = {
 };
 
 export type RecordProps = {
+  id: number;
   trainNumber: number;
   railwayNumber: number;
   departureStation: string;
   arrivalStation: string;
   departureTime: string;
   arrivalTime: string;
+  deleteRecord: (id: number) => void;
 };
 
 export type CreateRecordT = {

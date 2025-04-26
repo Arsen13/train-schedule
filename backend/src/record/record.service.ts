@@ -66,7 +66,9 @@ export class RecordService {
     });
 
     const filteredRecords = records.filter((record) =>
-      record.arrivalStation.includes(arrivalStation),
+      record.arrivalStation
+        .toLowerCase()
+        .includes(arrivalStation.toLowerCase()),
     );
 
     return filteredRecords;

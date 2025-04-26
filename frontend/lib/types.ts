@@ -56,3 +56,25 @@ export type UserT = {
   email: string;
   stationName: string;
 };
+
+export type Record = {
+  id: number;
+  userId: number;
+  trainNumber: number;
+  railwayNumber: number;
+  departureStation: string;
+  arrivalStation: string;
+  arrivalTime: string;
+  departureTime: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RecordProps = {
+  trainNumber: number;
+  railwayNumber: number;
+  departureStation: string;
+  arrivalStation: string;
+  departureTime: string;
+  arrivalTime: string;
+};

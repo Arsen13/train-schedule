@@ -27,3 +27,22 @@ export const SignUpSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const CreateRecordSchema = z.object({
+  trainNumber: z.coerce.number().min(1),
+  railwayNumber: z.coerce.number().min(1),
+  departureStation: z.string().min(1),
+  arrivalStation: z.string().min(1),
+  arrivalTime: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((val) => !isNaN(val.getTime()), {
+      message: "Invalid date",
+    }),
+  departureTime: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((val) => !isNaN(val.getTime()), {
+      message: "Invalid date",
+    }),
+});

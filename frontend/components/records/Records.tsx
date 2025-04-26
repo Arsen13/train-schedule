@@ -12,7 +12,6 @@ export default function Records() {
     getRecords();
   }, [getRecords]);
 
-  console.log(records);
   return (
     <div className="w-full border-2 px-5 py-2">
       <p className="text-center text-2xl mb-3">Train Schedule</p>

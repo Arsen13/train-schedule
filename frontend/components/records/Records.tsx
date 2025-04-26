@@ -3,6 +3,8 @@
 import { useRecordStore } from "@/store/recordStore";
 import Record from "./Record";
 import { useEffect } from "react";
+import { ImSortNumbericDesc } from "react-icons/im";
+import { ImSortNumericAsc } from "react-icons/im";
 
 export default function Records() {
   const records = useRecordStore((state) => state.records);
@@ -15,7 +17,19 @@ export default function Records() {
 
   return (
     <div className="w-full border-2 px-5 py-2">
-      <p className="text-center text-2xl mb-3">Train Schedule</p>
+      <div className="relative">
+        <p className="text-center text-2xl mb-3">Train Schedule</p>
+        <div className="absolute flex gap-24 top-1.5 right-24">
+          <ImSortNumericAsc
+            onClick={() => getRecords(undefined, "asc")}
+            className="w-6 h-6 cursor-pointer"
+          />
+          <ImSortNumbericDesc
+            onClick={() => getRecords(undefined, "desc")}
+            className="w-6 h-6 cursor-pointer"
+          />
+        </div>
+      </div>
       {records.length <= 0 ? (
         <>Dont have records</>
       ) : (

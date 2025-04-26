@@ -11,7 +11,7 @@ export default function SearchField() {
       type="text"
       name="searchField"
       placeholder="Enter arrival station name"
-      className="h-8 w-sm border border-amber-100 rounded-md text-sm italic pl-2"
+      className="h-8 w-sm border-2 border-amber-100 rounded-md text-sm italic pl-2 placeholder:text-center"
       onChange={handleSearch}
     />
   );

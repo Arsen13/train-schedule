@@ -1,13 +1,24 @@
-import { CiLogout } from "react-icons/ci";
+"use client";
+
+import { UserT } from "@/lib/types";
+import { useEffect, useState } from "react";
+import LogoutBtn from "./LogoutBtn";
 
 export default function Navbar() {
+  const [user, setUser] = useState<UserT>();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
   return (
     <div className="flex flex-row mt-2 mx-8 justify-between">
-      <p className="text-3xl">Lviv Station</p>
+      <p className="text-3xl">{user?.stationName} Station</p>
       <div className="flex flex-row items-center gap-3">
-        <p className="italic">lviv@gmail.com</p>
+        <p className="italic">{user?.email}</p>
 
-        <CiLogout className="w-8 h-8 hover:text-red-500 text-foreground duration-300 cursor-pointer" />
+        <LogoutBtn />
       </div>
     </div>
   );

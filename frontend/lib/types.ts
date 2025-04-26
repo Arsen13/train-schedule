@@ -50,3 +50,9 @@ export const CreateRecordSchema = z.object({
 export interface PostOptions {
   returnRes: boolean;
 }
+
+export type UserT = {
+  id: number;
+  email: string;
+  stationName: string;
+};

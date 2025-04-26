@@ -81,7 +81,7 @@ export type RecordProps = {
   deleteRecord: (id: number) => void;
 };
 
-export type CreateRecordT = {
+export type RecordT = {
   arrivalStation: string;
   arrivalTime: Date;
   departureStation: string;

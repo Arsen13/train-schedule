@@ -1,6 +1,7 @@
 import { RxUpdate } from "react-icons/rx";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RecordProps } from "@/lib/types";
+import Link from "next/link";
 
 export default function Record({
   id,
@@ -36,7 +37,11 @@ export default function Record({
         {departureTime.split("T")[1].split(".000Z")[0].substring(0, 5)}
       </p>
       <div className="flex gap-2">
-        <RxUpdate className="cursor-pointer hover:text-green-500 duration-500" />
+        <Link
+          href={`/?showModal=update&id=${id}&railwayN=${railwayNumber}&trainN=${trainNumber}&depSt=${departureStation}&arrSt=${arrivalStation}`}
+        >
+          <RxUpdate className="cursor-pointer hover:text-green-500 duration-500" />
+        </Link>
         <AiOutlineDelete
           onClick={handleDelete}
           className="cursor-pointer hover:text-red-500 duration-500"

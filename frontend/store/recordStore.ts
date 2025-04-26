@@ -1,5 +1,5 @@
 import { API_URL } from "@/constants/api";
-import { CreateRecordT, Record } from "@/lib/types";
+import { RecordT, Record } from "@/lib/types";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -14,7 +14,8 @@ export type Actions = {
   getRecords: (page?: number, sortOrder?: "asc" | "desc") => void;
   incrementPage: () => void;
   decrementPage: () => void;
-  createRecord: (data: CreateRecordT) => void;
+  createRecord: (data: RecordT) => void;
+  updateRecord: (id: string, data: RecordT) => void;
   deleteRecord: (id: number) => void;
 };
 
@@ -71,7 +72,7 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
     }
   },
 
-  createRecord: async (data: CreateRecordT) => {
+  createRecord: async (data: RecordT) => {
     try {
       const response = await fetch(`${API_URL}/record`, {
         method: "POST",
@@ -90,6 +91,31 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
       }
     } catch (error) {
       console.error("Error with creating record:", error);
+    }
+  },
+
+  updateRecord: async (id: string, data: RecordT) => {
+    try {
+      const response = await fetch(`${API_URL}/record/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+      if (responseData.id) {
+        const updatedRecords = get().records.filter(
+          (item) => Number(item.id) != Number(id)
+        );
+        updatedRecords.push(responseData);
+        set(() => ({ records: updatedRecords }));
+        toast.success("Record was successfully updated");
+      }
+    } catch (error) {
+      console.error("Error with updating record:", error);
     }
   },
 

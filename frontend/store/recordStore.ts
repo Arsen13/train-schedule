@@ -17,6 +17,7 @@ export type Actions = {
   createRecord: (data: RecordT) => void;
   updateRecord: (id: string, data: RecordT) => void;
   deleteRecord: (id: number) => void;
+  searchRecords: (searchString: string) => void;
 };
 
 export const useRecordStore = create<State & Actions>()((set, get) => ({
@@ -133,6 +134,27 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
       }
     } catch (error) {
       console.error("Error with delete record:", error);
+    }
+  },
+
+  searchRecords: async (searchString: string) => {
+    try {
+      if (searchString == "") {
+        get().getRecords();
+      } else {
+        const response = await fetch(
+          `${API_URL}/record/search/${searchString}`,
+          {
+            credentials: "include",
+          }
+        );
+
+        const data = await response.json();
+
+        set(() => ({ records: data }));
+      }
+    } catch (error) {
+      console.error("Error in search record:", error);
     }
   },
 }));

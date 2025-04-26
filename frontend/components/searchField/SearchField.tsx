@@ -1,10 +1,13 @@
 "use client";
 
+import { useRecordStore } from "@/store/recordStore";
 import { ChangeEvent } from "react";
 
 export default function SearchField() {
+  const searchRecords = useRecordStore((state) => state.searchRecords);
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    searchRecords(e.target.value);
   };
   return (
     <input

@@ -5,9 +5,13 @@ import InputField from "./InputField";
 import AuthButton from "./AuthButton";
 import { SignUpSchema } from "@/lib/types";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import signUp from "@/app/signup/signUp";
 
 export default function SignUpForm() {
-  const handleSignUp = (formData: FormData) => {
+  const router = useRouter();
+
+  const handleSignUp = async (formData: FormData) => {
     const result = SignUpSchema.safeParse(Object.fromEntries(formData));
 
     if (!result.success) {
@@ -19,8 +23,10 @@ export default function SignUpForm() {
       return;
     }
 
-    console.log(result.data);
+    const userData = await signUp(formData);
+    localStorage.setItem("user", JSON.stringify(userData));
     toast.success("Successfully sign up");
+    router.push("/");
   };
   return (
     <form action={handleSignUp} className="w-72 mt-4">

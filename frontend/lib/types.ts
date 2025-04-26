@@ -46,3 +46,7 @@ export const CreateRecordSchema = z.object({
       message: "Invalid date",
     }),
 });
+
+export interface PostOptions {
+  returnRes: boolean;
+}

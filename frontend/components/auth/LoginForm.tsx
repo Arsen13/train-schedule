@@ -5,9 +5,13 @@ import InputField from "./InputField";
 import AuthButton from "./AuthButton";
 import { LoginSchema } from "@/lib/types";
 import toast from "react-hot-toast";
+import login from "@/app/login/login";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const handleLogin = (formData: FormData) => {
+  const router = useRouter();
+
+  const handleLogin = async (formData: FormData) => {
     const result = LoginSchema.safeParse(Object.fromEntries(formData));
 
     if (!result.success) {
@@ -19,8 +23,10 @@ export default function LoginForm() {
       return;
     }
 
-    console.log(result.data);
+    const userData = await login(formData);
+    localStorage.setItem("user", JSON.stringify(userData));
     toast.success("Successfully login");
+    router.push("/");
   };
 
   return (

@@ -1,9 +1,9 @@
 "use server";
 
-import { post } from "@/lib/fetch";
 import { jwtDecode } from "jwt-decode";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
+import { post } from "../util/fetch";
 
 export default async function login(formData: FormData) {
   const errorOrRes = await post("auth/login", formData, { returnRes: true });

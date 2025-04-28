@@ -23,8 +23,7 @@ export default function CreateModal() {
       return;
     }
 
-    await createRecord(result.data);
-    toast.success("Successfully create a record");
+    createRecord(result.data);
     router.back();
   };
   return (

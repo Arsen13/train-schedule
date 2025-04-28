@@ -1,3 +1,9 @@
+import {
+  deleteWrapper,
+  getWrapper,
+  postWrapper,
+  putWrapper,
+} from "@/app/util/fetch";
 import { API_URL } from "@/constants/api";
 import { RecordT, Record } from "@/lib/types";
 import toast from "react-hot-toast";
@@ -30,21 +36,15 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
     try {
       const { limit } = get();
 
-      const response = await fetch(
-        `${API_URL}/record/pagination?page=${page}&limit=${limit}&sortOrder=${sortOrder}`,
-        { credentials: "include" }
+      const data = await getWrapper(
+        `/record/pagination?page=${page}&limit=${limit}&sortOrder=${sortOrder}`
       );
 
-      const data = await response.json();
-
-      if (response.status == 200) {
+      if (data.length > 0) {
         set(() => ({ records: data }));
       }
 
-      const findAll = await fetch(`${API_URL}/record`, {
-        credentials: "include",
-      });
-      const findAllData = await findAll.json();
+      const findAllData = await getWrapper("/record");
 
       if (findAllData.length) {
         const length = Math.ceil(findAllData.length / get().limit);
@@ -75,20 +75,12 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
 
   createRecord: async (data: RecordT) => {
     try {
-      const response = await fetch(`${API_URL}/record`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const responseData = await response.json();
+      const responseData = await postWrapper("/record", data);
       if (responseData.id) {
         if (get().records.length < get().limit) {
           set(() => ({ records: [...get().records, responseData] }));
         }
+        toast.success("Successfully create a record");
       }
     } catch (error) {
       console.error("Error with creating record:", error);
@@ -97,16 +89,7 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
 
   updateRecord: async (id: string, data: RecordT) => {
     try {
-      const response = await fetch(`${API_URL}/record/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const responseData = await response.json();
+      const responseData = await putWrapper(`/record/${id}`, data);
       if (responseData.id) {
         const updatedRecords = get().records.filter(
           (item) => Number(item.id) != Number(id)
@@ -122,12 +105,7 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
 
   deleteRecord: async (id: number) => {
     try {
-      const response = await fetch(`${API_URL}/record/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      const data = await response.json();
+      const data = await deleteWrapper(`record/${id}`);
       if (data.message == "Record was successfully deleted") {
         get().getRecords();
         toast.success("Record was successfully deleted");
@@ -142,14 +120,7 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
       if (searchString == "") {
         get().getRecords();
       } else {
-        const response = await fetch(
-          `${API_URL}/record/search/${searchString}`,
-          {
-            credentials: "include",
-          }
-        );
-
-        const data = await response.json();
+        const data = await getWrapper(`record/search/${searchString}`);
 
         set(() => ({ records: data }));
       }

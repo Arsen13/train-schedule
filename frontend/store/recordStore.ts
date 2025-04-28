@@ -80,6 +80,7 @@ export const useRecordStore = create<State & Actions>()((set, get) => ({
         if (get().records.length < get().limit) {
           set(() => ({ records: [...get().records, responseData] }));
         }
+        get().getRecords();
         toast.success("Successfully create a record");
       }
     } catch (error) {

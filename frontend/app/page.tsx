@@ -7,8 +7,8 @@ import SearchField from "@/components/searchField/SearchField";
 import Link from "next/link";
 import { IoMdAddCircle } from "react-icons/io";
 
-export default function Home({ searchParams }: any) {
-  const showModal = searchParams?.showModal;
+export default async function Home({ searchParams }: any) {
+  const { showModal } = await searchParams;
 
   return (
     <>

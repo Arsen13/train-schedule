@@ -24,6 +24,11 @@ export default function LoginForm() {
     }
 
     const userData = await login(formData);
+    if (userData.error) {
+      toast.error(userData.error);
+      return;
+    }
+
     localStorage.setItem("user", JSON.stringify(userData));
     toast.success("Successfully login");
     router.push("/");

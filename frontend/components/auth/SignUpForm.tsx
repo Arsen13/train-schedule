@@ -24,6 +24,11 @@ export default function SignUpForm() {
     }
 
     const userData = await signUp(formData);
+    if (userData.error) {
+      toast.error(userData.error);
+      return;
+    }
+
     localStorage.setItem("user", JSON.stringify(userData));
     toast.success("Successfully sign up");
     router.push("/");

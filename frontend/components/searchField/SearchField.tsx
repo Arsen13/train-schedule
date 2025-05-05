@@ -1,14 +1,20 @@
 "use client";
 
 import { useRecordStore } from "@/store/recordStore";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useCallback } from "react";
+import { debounce } from "lodash";
 
 export default function SearchField() {
   const searchRecords = useRecordStore((state) => state.searchRecords);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    searchRecords(e.target.value);
-  };
+  const handleSearch = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    handleDebounceChange(e.target.value);
+  }, []);
+
+  const handleDebounceChange = debounce((value: string) => {
+    searchRecords(value);
+  }, 350);
+
   return (
     <input
       type="text"

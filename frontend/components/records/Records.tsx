@@ -5,6 +5,7 @@ import Record from "./Record";
 import { useEffect } from "react";
 import { ImSortNumbericDesc } from "react-icons/im";
 import { ImSortNumericAsc } from "react-icons/im";
+import RecordSkeleton from "../skeletons/RecordSkeleton";
 
 export default function Records() {
   const records = useRecordStore((state) => state.records);
@@ -31,7 +32,7 @@ export default function Records() {
         </div>
       </div>
       {records.length <= 0 ? (
-        <>Dont have records</>
+        <RecordSkeleton />
       ) : (
         records.map((record) => (
           <Record

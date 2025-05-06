@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
+@plugin "daisyui";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,7 +24,10 @@
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-mono);
+}
+
+html {
+  background-color: var(--background);
 }

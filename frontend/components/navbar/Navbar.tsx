@@ -3,6 +3,7 @@
 import { UserT } from "@/lib/types";
 import { useEffect, useState } from "react";
 import LogoutBtn from "./LogoutBtn";
+import UserEmailSkeleton from "../skeletons/UserEmailSkeleton";
 
 export default function Navbar() {
   const [user, setUser] = useState<UserT>();
@@ -16,7 +17,11 @@ export default function Navbar() {
     <div className="flex flex-row mt-2 mx-8 justify-between">
       <p className="text-3xl">{user?.stationName} Station</p>
       <div className="flex flex-row items-center gap-3">
-        <p className="italic">{user?.email}</p>
+        {user?.email ? (
+          <p className="italic">{user?.email}</p>
+        ) : (
+          <UserEmailSkeleton />
+        )}
 
         <LogoutBtn />
       </div>
